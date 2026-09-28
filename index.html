@@ -139,7 +139,7 @@
 
 <canvas id="c" aria-label="像素风列车窗外风景动画"></canvas>
 
-<div class="hint px-panel" id="hint">移动鼠标显示控制 · <kbd>Space</kbd> 暂停 · <kbd>F</kbd> 全屏 · <kbd>←</kbd><kbd>→</kbd> 车速 · <kbd>0</kbd>–<kbd>5</kbd> 时刻 · <kbd>S</kbd> 季节 · <kbd>W</kbd> 天气 · <kbd>B</kbd> 景色<br><kbd>V</kbd> 车内视角 · <kbd>M</kbd> 声音 · <kbd>R</kbd> 轨声 · <kbd>T</kbd> 停站 · <kbd>E</kbd> 省电 · <kbd>H</kbd> 壁纸模式</div>
+<div class="hint px-panel" id="hint">移动鼠标显示控制 · <kbd>Space</kbd> 暂停 · <kbd>F</kbd> 全屏 · <kbd>←</kbd><kbd>→</kbd> 车速 · <kbd>0</kbd>–<kbd>5</kbd> 时刻 · <kbd>S</kbd> 季节 · <kbd>W</kbd> 天气 · <kbd>B</kbd> 景色<br><kbd>V</kbd> 车内视角 · <kbd>M</kbd> 声音 · <kbd>R</kbd> 轨声 · <kbd>D</kbd> 鸣笛 · <kbd>T</kbd> 停站 · <kbd>E</kbd> 省电 · <kbd>H</kbd> 壁纸模式</div>
 <div class="toast px-panel" id="toast" role="status"></div>
 
 <div class="bar px-panel show" id="bar">
@@ -208,6 +208,7 @@
     <button type="button" data-opt="sound">声音</button>
     <button type="button" data-opt="eco">省电</button>
     <button type="button" data-opt="wall">壁纸模式</button>
+    <button type="button" id="toot">鸣笛</button>
   </div>
   <span class="sep"></span>
   <button id="fs" type="button">全屏</button>
@@ -316,6 +317,10 @@ def('doorWin', '#3d6a82', .05); def('doorWinHi', '#7aa6b8', .05);
 def('roof', '#5a2a28', .05); def('roofDark', '#3a1c20', .05); def('roofEquip', '#2c1a22', .05);
 def('under', '#2e2430', .05); def('bogie', '#3a2e3a', .05); def('wheel', '#261e26', .05); def('wheelHi', '#948aa0', .05);
 def('headlight', '#fff4c0', .05, .6); def('tail', '#ff5a4a', .05, .5);
+def('loco', '#2c2834', .05); def('locoL', '#474157', .05); def('locoHi', '#6c6581', .05); def('locoD', '#1f1b26', .05); def('locoO', '#141019', .05);
+def('locoRed', '#ae302c', .05); def('locoRedD', '#6c1b20', .05); def('brass', '#e2b457', .05); def('brassD', '#a67a36', .05);
+def('wheelRed', '#a42c2b', .05); def('wheelRedD', '#661a1f', .05); def('tyre', '#d9d0d4', .05); def('steel', '#bab4c2', .05);
+def('smokeL', '#dcd6e0', .1); def('smokeM', '#aca4b6', .1); def('smokeD', '#7a7088', .1); def('steam', '#fbfbfd', .1);
 def('pampas', '#ecdca4', 0); def('pampasS', '#c2ad76', 0);
 def('fg1', '#5f6429', 0); def('fg2', '#7d7e33', 0); def('fg3', '#93903c', 0); def('fg4', '#aaa24a', 0);
 def('fsand1', '#e4c486', 0); def('fsand2', '#cfa96e', 0);
@@ -343,6 +348,14 @@ def('stnWin', '#ffd88a', .1, .5); def('clockF', '#f4f0e6', .1);
 def('exp1', '#eef0f2', .08); def('exp2', '#c4c8d2', .08); def('exp3', '#2a5aa0', .08);
 def('expWin', '#34414f', .08); def('expWinL', '#f0dca0', .08, .6); def('expNose', '#1a2230', .08);
 def('doorOpen', '#4a3230', .05, .2);
+// landmark stations: Mt Fuji, the Statue of Liberty, the Eiffel Tower
+// Fuji in the reference's blues: lit and shaded body, an outline, white snow with blue-grey shade and lavender streaks
+def('fujiL', '#4680b7', .72); def('fujiD', '#2c6497', .72); def('fujiE', '#223d4f', .72);
+def('fujiSnow', '#fbf3eb', .62); def('fujiSnowD', '#8dadd3', .66); def('fujiStreak', '#d6ccd0', .66);
+// Eiffel Tower and Statue of Liberty (colours picked from the reference art; the torch flame glows)
+def('eifOutline', '#2a2230', .35); def('eifDark', '#675251', .35); def('eifMid', '#917163', .35); def('eifLight', '#c29a7e', .35); def('eifHi', '#e7bd9d', .35);
+def('libFlameD', '#a34d1b', .2, .9); def('libFlame', '#fdbd2f', .2, .9); def('libFlameO', '#dd6c22', .2, .9); def('libOutline', '#13242e', .35); def('libDark', '#25787c', .35); def('libMid', '#5bbeae', .35); def('libLight', '#91e6cd', .35); def('libStoneD', '#6f5754', .35); def('libStone', '#a88c65', .35); def('libStoneL', '#dbad83', .35); def('libStoneHi', '#ecd5bf', .35); def('libTree', '#4e7a3e', .35); def('libTreeD', '#2e4a2c', .35);
+def('flagB', '#2a4a9a', .12); def('flagW', '#f0ece0', .12); def('flagR', '#c8323a', .12);
 // train interior (emissive floor so the cabin stays lit at night)
 def('inWall', '#dccaa6', 0, .55); def('inWallD', '#bfa982', 0, .55); def('inWallL', '#ece0c4', 0, .55); def('inCeil', '#e8e0ce', 0, .6);
 def('inFrame', '#8e949e', 0, .55); def('inFrameL', '#c8ccd2', 0, .55); def('inRack', '#6a6e78', 0, .55);
@@ -500,8 +513,23 @@ function applyWeather(e) {
   e.starA = 1 - clamp(wet + fog, 0, 1);
   e.glintK = clamp(1 - wet * 0.8 - fog * 0.5, 0, 1);
   e.wet = wet;
+  e.skyLow = e.sky[3];
   return e;
 }
+
+// extra mountain tones derived from the seasonal ones, so they change with the seasons the same way
+function defFrom(name, src, fn) {
+  const sd = defs[P[src]];
+  def(name, '#000000', sd.fog);
+  const d = defs[P[name]];
+  d.rgb = fn(sd.rgb); if (sd.rgbS) d.rgbS = sd.rgbS.map(fn);
+}
+for (const L of ['Far', 'Near']) {
+  defFrom('mtn' + L + 'Hi', 'mtn' + L + 'Lit', c => mixRGB(c, [255, 246, 228], 0.3));
+  defFrom('mtn' + L + 'Deep', 'mtn' + L + 'Dark', c => c.map(v => v * 0.84));
+}
+def('mtnSnow', '#f7f1ec', 1); def('mtnSnowS', '#c4c2da', 1);
+defEnv('skyLow'); def('mtnFarHaze', '#000000', 0);   // set each frame: far mountain half lost in the horizon haze
 
 /* ---------- snow cover ----------
    Winter colors blend from a bare, leafless look to full snow as snow
@@ -543,6 +571,7 @@ function buildPal(e) {
     pal[i] = pack(r, g, b);
   }
   const on = Math.floor(clock * 2.4) & 1, lit = pack(255, 70, 50), dim = pack(58, 18, 18);
+  { const a = pal[P.mtnFar], b = pal[P.skyLow], m = (s) => (((a >>> s) & 255) + ((b >>> s) & 255)) >> 1; pal[P.mtnFarHaze] = pack(m(0), m(8), m(16)); }
   pal[P.xLampA] = on ? lit : dim;
   pal[P.xLampB] = on ? dim : lit;
 }
@@ -654,7 +683,30 @@ function pickType(v, z) {
   return 'pine';
 }
 
-/* ---- sky clouds ---- */
+/* ---- sky clouds ----
+   Three kinds: long flat stratus bars, puffy cumulus (overlapping round lobes on a flat base, lit on top and
+   shaded underneath, with a dithered seam between the two), and faint high streaks of cirrus. */
+function cumulus(put, r, cx, cy, lw) {
+  const n = 2 + Math.floor(lw / 16), lobes = [];
+  for (let i = 0; i < n; i++) {
+    const t = n === 1 ? 0.5 : i / (n - 1), mid = 1 - Math.abs(t - 0.5) * 2;
+    const rr = 3 + mid * Math.min(9, lw / 7) + r() * 3;
+    lobes.push([cx - lw / 2 + t * lw + (r() - 0.5) * 4, cy - rr * 0.5, rr]);
+  }
+  const x0 = Math.floor(cx - lw / 2 - 14), x1 = Math.ceil(cx + lw / 2 + 14);
+  for (let x = x0; x <= x1; x++) for (let y = cy - 16; y <= cy + 1; y++) {
+    let inL = null, hi = -9;
+    for (const [lx, ly, rr] of lobes) {
+      const dx = x + 0.5 - lx, dy = (y + 0.5 - ly) / 0.72;
+      if (dx * dx + dy * dy > rr * rr) continue;
+      const h = (ly - y) / rr - dx / rr * 0.25;              // how high up (and how far toward the light) in this lobe
+      if (h > hi) { hi = h; inL = rr; }
+    }
+    if (inL === null) continue;
+    const bay = BAYER[((y & 3) << 2) | (x & 3)];
+    put(x, y, y >= cy ? P.cloudD : hi + (bay - 0.5) * 0.3 > -0.1 ? P.cloudL : y >= cy - 1 ? P.cloudD : P.cloudM);
+  }
+}
 const clouds = new Layer({
   y0: 0, y1: 96, par: 0.03, drift: 1.3, cw: 160, shared: true,
   gen(b, ci, L) {
@@ -664,6 +716,7 @@ const clouds = new Layer({
       const n = r() < 0.3 ? 0 : (r() < 0.55 ? 1 : 2);
       for (let q = 0; q < n; q++) {
         const cx = k * L.cw + r() * L.cw, cy = Math.round(6 + Math.pow(r(), 1.4) * 62), lw = 20 + r() * 70;
+        if (r() < 0.5 && cy > 18) { cumulus(put, r, cx, cy, lw * 0.8); continue; }
         bar(cx - lw * 0.5 - r() * 12, cy + 3, lw * (0.5 + r() * 0.5), 1 + (r() * 2 | 0), P.cloudD);
         bar(cx - lw / 2, cy, lw, 3, P.cloudL);
         bar(cx - lw / 2 + 2 + r() * 4, cy + 2, lw * 0.7, 1, P.cloudM);
@@ -672,6 +725,18 @@ const clouds = new Layer({
         if (r() < 0.55) { const w3 = w2 * (0.35 + r() * 0.4); bar(x2 + r() * (w2 - w3), cy - 4, w3, 2, P.cloudL); }
         const s = r() * 3 | 0;
         for (let i = 0; i < s; i++) bar(cx + (r() - 0.5) * lw * 1.5, cy + ((r() * 10 - 4) | 0), 3 + r() * 14, 1, r() < 0.5 ? P.cloudM : P.cloudL);
+      }
+      // cirrus: a few thin, broken streaks high up
+      if (r() < 0.45) {
+        const cx = k * L.cw + r() * L.cw, cy = 3 + (r() * 16 | 0), m = 2 + (r() * 2 | 0);
+        for (let i = 0; i < m; i++) {
+          const y = cy + i * 2, x0 = Math.round(cx + (r() - 0.5) * 24 + i * 9), w = 18 + (r() * 40 | 0);
+          for (let j = 0; j < w; j++) {
+            const x = x0 + j, edge = Math.min(j, w - 1 - j) / 6;   // fades out towards both ends
+            if (edge < 1 && edge <= BAYER[((y & 3) << 2) | (x & 3)]) continue;
+            put(x, y, edge > 1.6 && i === 0 ? P.cloudL : P.cloudM);
+          }
+        }
       }
     }
   },
@@ -686,16 +751,57 @@ function islands(wx, scale, seed, thr, base, amp) {
   const v = fbm(Math.floor(wx / 2) * 2 / scale, seed, 3);
   return v > thr ? clamp(Math.round(base - (v - thr) * amp), 60, 110) : 999;
 }
+/* Mountains are shaded as if every peak sheds ridges and gullies down its flanks: each pixel belongs to the
+   peak it sits most directly below, faces the light (from the right) or not depending on which side of that
+   peak it is, and the thin wedges fanning out from the summit alternate between ridge and gully. The far range
+   keeps snow on its highest peaks, streaking down the gullies, and fades into the horizon haze at its foot;
+   the near range is wooded, with ragged tree tips on its skyline and darker stands of trees on its slopes. */
 function mountainLayer(o) {
   return new Layer({
     y0: o.y0, y1: 110, par: o.par, cw: 256,
     gen(b, ci, L, bio) {
-      const ox = ci * L.cw, top = bio === SEASIDE ? o.sea : bio === RIVER ? o.gorge : o.top;
+      const ox = ci * L.cw, top = bio === SEASIDE ? o.sea : bio === RIVER ? o.gorge : o.top, M = 110, R = o.ramp;
+      const T = new Int16Array(L.cw + 2 * M);
+      for (let i = 0; i < T.length; i++) T[i] = top(ox - M + i);
+      const peaks = [];
+      for (let i = 5; i < T.length - 5; i++) {
+        if (T[i] >= 106) continue;
+        let ok = true;
+        for (let j = -5; j <= 5 && ok; j++) if (T[i + j] < T[i] || (j > 0 && T[i + j] === T[i])) ok = false;
+        if (ok) peaks.push(i);
+      }
+      const wooded = o.forest && bio !== SEASIDE;
       for (let lx = 0; lx < L.cw; lx++) {
-        const wx = ox + lx, t0 = top(wx), sl = top(wx + 3) - top(wx - 3);
+        const i = lx + M, wx = ox + lx, sl = T[i + 3] - T[i - 3];
+        let t0 = T[i];
+        if (t0 >= 106) continue;
+        if (wooded && hash2(wx, 77) < 0.4) t0--;             // tree tips along the skyline
+        const snowY = o.snow ? o.snow + Math.round(fbm(wx / 28, 41, 2) * 10) : -99;
         for (let y = Math.max(t0, L.y0); y < L.y1; y++) {
-          let c = sl > 0 ? o.lit : o.base;
-          if (sl <= 0 && y - t0 > 12 + (hash2(wx >> 2, 3) * 8 | 0)) c = o.dark;
+          // the peak this pixel hangs from: the one it is most nearly straight below
+          let p = -1, best = 1e9;
+          for (const q of peaks) {
+            if (T[q] > y) continue;
+            const v = Math.abs(i - q) / (y - T[q] + 6);
+            if (v < best) { best = v; p = q; }
+          }
+          const depth = y - t0, dx = p < 0 ? sl : i - p, d = p < 0 ? 6 : y - T[p] + 6;
+          const ray = Math.floor(dx * 5 / d + fbm(y / 9, p * 3 + 7, 2) * 1.2), hr = hash(ray * 31 + p * 7 + 3);
+          const lit = depth < 3 ? sl > 0 || (sl === 0 && dx > 0) : dx > 0;
+          let k = lit ? (hr < 0.28 ? 2 : 3) : (hr < 0.22 ? 2 : hr > 0.84 ? 0 : 1);
+          if (lit && hr > 0.86 && depth < 16) k = 4;
+          if (depth === 0) k = lit ? 4 : Math.max(k, 1);
+          if (depth > 0 && hash2(wx, y * 3 + 5) < (wooded ? 0.1 : 0.04)) k = Math.max(0, k - 1);
+          if (wooded && depth > 2 && hash2(wx >> 2, (y + (wx >> 3)) >> 1) < 0.22 && hash2(wx, y) < 0.7) k = Math.max(0, k - 1);
+          let c = R[k];
+          if (p >= 0 && T[p] < snowY - 3) {
+            const streak = hr < 0.4 ? Math.round((0.4 - hr) * 22) : 0;
+            if (y < snowY + streak - (lit ? 0 : 2)) c = lit ? (k === 4 ? P.mtnSnow : k >= 2 ? P.mtnSnow : P.mtnSnowS) : (k === 2 ? P.mtnSnow : P.mtnSnowS);
+          }
+          if (o.haze && bio !== SEASIDE && y > o.haze) {
+            const hz = Math.min(0.85, (y - o.haze) / 24);
+            if (hz > BAYER[((y & 3) << 2) | (wx & 3)]) c = P.mtnFarHaze;
+          }
           b[(y - L.y0) * L.cw + lx] = c;
         }
       }
@@ -703,13 +809,13 @@ function mountainLayer(o) {
   });
 }
 const farMtn = mountainLayer({
-  y0: 30, par: 0.07, base: P.mtnFar, lit: P.mtnFarLit, dark: P.mtnFarDark,
+  y0: 30, par: 0.07, ramp: [P.mtnFarDeep, P.mtnFarDark, P.mtnFar, P.mtnFarLit, P.mtnFarHi], snow: 45, haze: 80,
   top: wx => ridge(wx, 80, 3, 118, 105, 36, 104),
   sea: wx => islands(wx, 60, 13, 0.56, 94, 130),
   gorge: wx => ridge(wx, 44, 23, 122, 118, 22, 100),
 });
 const nearMtn = mountainLayer({
-  y0: 44, par: 0.15, base: P.mtnNear, lit: P.mtnNearLit, dark: P.mtnNearDark,
+  y0: 44, par: 0.15, ramp: [P.mtnNearDeep, P.mtnNearDark, P.mtnNear, P.mtnNearLit, P.mtnNearHi], forest: true,
   top: wx => ridge(wx, 48, 8, 132, 100, 50, 104),
   sea: wx => islands(wx, 36, 19, 0.62, 96, 160),
   gorge: wx => ridge(wx, 26, 29, 138, 118, 46, 104),
@@ -827,6 +933,8 @@ const trees = new Layer({
     for (let lx = 0; lx < L.cw; lx++) {
       const wx = ox + lx;
       if (bio === LAKE || bio === RIVER) for (let y = 91; y < 99; y++) put(wx, y, P.treeShadow);
+      // the town's back row of houses stands a little further off: give it ground to stand on
+      if (bio === TOWN) for (let y = 93 + (hash2(wx >> 3, 91) < 0.5 ? 0 : 1); y < 99; y++) put(wx, y, hash2(wx, y * 5 + 1) < 0.3 ? P.grass1 : P.grass3);
       const tuft = hash2(wx, 77) < 0.35 ? 1 + (hash2(wx, 78) * 3 | 0) : 0;
       for (let y = 99 - tuft; y < 106; y++) {
         const n = hash2(wx, y * 7 + 3);
@@ -874,6 +982,17 @@ const trees = new Layer({
           else { feats.push({ house: 1, g: v < 0.6 ? 95 : 99, x: wx, row: v < 0.6 ? 0 : 2, seed: r() }); x += 10 + r() * 6; }
         }
         if (r() < 0.18) feats.push({ pagoda: 1, x: k * L.cw + 20 + Math.floor(r() * 88), row: 0.5 });
+      }
+    }
+    if (bio === TOWN) {
+      // the Eiffel Tower stands in an open park: clear the houses around its base, plant a few trees
+      for (const tx of eiffelsIn((ci - 1) * L.cw - 40, (ci + 2) * L.cw + 40)) {
+        for (let i = feats.length - 1; i >= 0; i--) {
+          const f = feats[i], x0 = f.x - 6, x1 = f.x + (f.house ? 20 : 6);
+          if (x1 > tx - 27 && x0 < tx + 27) feats.splice(i, 1);
+        }
+        const r = rng(hash(tx * 13 + 7));
+        for (const [ox, R] of [[-31, 5], [-24, 4], [24, 4], [31, 5]]) feats.push({ x: tx + ox, row: 1, R, top: 92 - R * 2, type: 'org', seed: r() });
       }
     }
     feats.sort((a, c) => a.row - c.row || a.x - c.x);
@@ -1353,8 +1472,8 @@ function drawTunnelLights(cam) {
 }
 
 /* ---------- the train ---------- */
-const CAR_W = 70;
-function buildCar(front, seed) {
+const CAR_W = 70, LOCO_X = 144, TRAIN_MID = 96;   // two carriages, then the engine; the train is centred on TRAIN_MID
+function buildCar(tail, seed) {
   const w = CAR_W, h = 19, a = new Uint16Array(w * h);
   const s = (x, y, c) => { if (x >= 0 && x < w && y >= 0 && y < h) a[y * w + x] = c; };
   const R = (x, y, ww, hh, c) => { for (let j = 0; j < hh; j++) for (let i = 0; i < ww; i++) s(x + i, y + j, c); };
@@ -1381,15 +1500,14 @@ function buildCar(front, seed) {
     R(dx + 2, 6, 3, 4, P.doorWin); s(dx + 4, 6, P.doorWinHi);
   }
   for (let y = 4; y < 18; y++) { s(0, y, P.bodyDark); s(w - 1, y, P.bodyDark); }
-  if (front) { s(w - 1, 14, P.headlight); s(w - 1, 15, P.headlight); }
-  else { s(0, 14, P.tail); }
+  if (tail) s(0, 14, P.tail);
   return a;
 }
 let CARS = [];
 const WINDOW_XS = [12, 22, 32, 42, 52];
 const ROT = [[0, -1], [1, 0], [0, 1], [-1, 0]];
 const WARM = [255, 196, 110];
-function trainX() { return Math.round(W / 2 - 71); }
+function trainX() { return Math.round(W / 2 - TRAIN_MID); }
 function drawTrain(cam, e, cover) {
   const tx = trainX(), baseY = 119 + OFF, D = Math.floor(cam);
   const cBog = pal[P.bogie], cWh = pal[P.wheel], cHi = pal[P.wheelHi];
@@ -1425,14 +1543,17 @@ function drawTrain(cam, e, cover) {
       }
     }
   }
-  for (let y = 12; y < 17; y++) { px(tx + 70, baseY + y, pal[P.under]); px(tx + 71, baseY + y, pal[P.under]); }
+  for (const cx of [70, 142]) for (let y = 12; y < 17; y++) { px(tx + cx, baseY + y, pal[P.under]); px(tx + cx + 1, baseY + y, pal[P.under]); }
+  let ldy = 0;
+  for (const bx of DRIVERS) { const m = (((D + tx + LOCO_X + bx) % 40) + 40) % 40; if (m < 2) ldy = 1; }
+  drawLoco(tx + LOCO_X, ldy, glow);
   const k = Math.max((e.night - 0.15) / 0.85, e.wet * 0.5, cover);
   if (k > 0) {
-    const fx = tx + 142;
+    const fx = tx + LOCO_X + 46, ly = 124.5 + ldy;
     for (let d = 0; d < 90; d++) {
-      const spread = 1.2 + d * 0.13, fall = 1 - d / 90;
-      for (let y = Math.floor(133.5 - spread); y <= Math.ceil(133.5 + spread); y++) {
-        const v = 1 - Math.abs(y - 133.5) / (spread + 0.5);
+      const spread = 1.2 + d * 0.13, fall = 1 - d / 90, cy = ly + d * 0.1;
+      for (let y = Math.floor(cy - spread); y <= Math.ceil(cy + spread); y++) {
+        const v = 1 - Math.abs(y - cy) / (spread + 0.5);
         if (v > 0) addPx(fx + d, y + OFF, WARM, 0.22 * k * fall * v);
       }
       addPx(fx + d, 141 + OFF, WARM, 0.35 * k * fall);
@@ -1440,9 +1561,425 @@ function drawTrain(cam, e, cover) {
   }
 }
 
+/* ---------- the engine: a small black-and-red steam locomotive ----------
+   The body is a sprite in scene rows LOCO_TOP.. (chimney cap at 112, rail at 141). The wheels, crank pins and
+   rods are drawn live so they turn with the distance travelled; the body bounces on rail joints, they don't. */
+const LOCO_W = 50, LOCO_TOP = 112, LOCO_H = 29, DRIVERS = [16, 25, 34];
+let LOCO = null;
+function buildLoco() {
+  const w = LOCO_W, a = new Uint16Array(w * LOCO_H);
+  const s = (x, y, c) => { y -= LOCO_TOP; if (x >= 0 && x < w && y >= 0 && y < LOCO_H) a[y * w + x] = c; };
+  const R = (x, y, ww, hh, c) => { for (let j = 0; j < hh; j++) for (let i = 0; i < ww; i++) s(x + i, y + j, c); };
+  // boiler, lit from above, with brass bands
+  [P.locoL, P.locoHi, P.locoL, P.loco, P.loco, P.loco, P.loco, P.locoD, P.locoD, P.locoD].forEach((c, j) => R(13, 122 + j, 23, 1, c));
+  for (const bx of [20, 28, 35]) for (let j = 0; j < 10; j++) s(bx, 122 + j, j < 4 ? P.brass : P.brassD);
+  // smokebox, a little fatter and darker, headlamp on its nose
+  [P.locoL, P.locoHi, P.locoL, P.loco, P.locoD, P.locoD, P.locoD, P.locoD, P.locoO, P.locoO, P.locoO].forEach((c, j) => R(36, 121 + j, 8, 1, c));
+  R(44, 122, 1, 10, P.locoO);
+  R(43, 123, 3, 3, P.locoD); s(45, 124, P.headlight);
+  // chimney with a flared cap
+  for (let y = 114; y < 121; y++) { s(37, y, P.locoHi); s(38, y, P.locoL); s(39, y, P.loco); s(40, y, P.locoD); }
+  R(36, 112, 6, 1, P.locoL); R(36, 113, 6, 1, P.locoD); s(38, 112, P.locoO); s(39, 112, P.locoO);
+  // steam dome with a brass cap, sand dome, whistle
+  R(26, 119, 3, 1, P.brass); R(25, 120, 5, 1, P.locoL); s(26, 120, P.locoHi); R(25, 121, 5, 1, P.loco);
+  R(17, 120, 2, 1, P.locoL); R(16, 121, 4, 1, P.loco);
+  R(14, 118, 1, 4, P.brass); s(14, 118, P.brassD);
+  // cab: window, number plate, red stripe
+  R(1, 117, 11, 1, P.locoL); R(0, 118, 13, 1, P.locoD);
+  R(0, 119, 13, 13, P.loco);
+  for (let y = 119; y < 132; y++) { s(0, y, P.locoD); s(12, y, P.locoD); }
+  R(3, 120, 7, 6, P.cream); R(4, 121, 5, 4, P.win); s(4, 121, P.winHi); s(5, 121, P.winHi);
+  R(4, 127, 5, 1, P.brass); R(4, 128, 5, 1, P.brassD);
+  R(0, 130, 13, 1, P.locoRed);
+  // running board and valance (hides the tops of the wheels), ash pan, cylinder
+  R(0, 132, 45, 1, P.locoRed); R(0, 133, 45, 1, P.locoRedD);
+  R(1, 134, 11, 1, P.locoO);
+  R(38, 134, 6, 1, P.locoL); R(38, 135, 6, 1, P.loco); R(38, 136, 6, 1, P.locoD); s(43, 135, P.locoD);
+  // buffer beam, buffer, cow-catcher
+  R(45, 131, 3, 2, P.locoRed); R(45, 133, 3, 1, P.locoRedD); s(48, 131, P.steel); s(48, 132, P.locoD);
+  for (const [y, x0, x1] of [[134, 44, 46], [135, 44, 47], [136, 44, 47], [137, 45, 48], [138, 45, 48], [139, 46, 48], [140, 46, 48]])
+    for (let x = x0; x <= x1; x++) s(x, y, x & 1 ? P.locoRed : P.locoRedD);
+  return a;
+}
+// one wheel: white-rimmed red disc, dark hub, and on the drivers a counterweight opposite the crank
+function locoWheel(cx, cy, r, th, big) {
+  const cT = pal[P.tyre], cW = pal[P.wheelRed], cC = pal[P.wheelRedD], cH = pal[P.locoO], cs = Math.cos(th), sn = Math.sin(th);
+  for (let y = Math.floor(cy - r); y < Math.ceil(cy + r); y++) for (let x = Math.floor(cx - r); x < Math.ceil(cx + r); x++) {
+    const dx = x + 0.5 - cx, dy = y + 0.5 - cy, d2 = dx * dx + dy * dy;
+    if (d2 > r * r + 0.3) continue;
+    px(x, y, d2 > (r - 1) ** 2 + 0.2 ? cT : d2 < 0.6 ? cH : big && d2 > 1 && dx * cs + dy * sn < -0.8 ? cC : cW);
+  }
+}
+function pxLine(x0, y0, x1, y1, c) {
+  x0 = Math.round(x0); y0 = Math.round(y0); x1 = Math.round(x1); y1 = Math.round(y1);
+  const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0), 1);
+  for (let i = 0; i <= n; i++) px(Math.round(x0 + (x1 - x0) * i / n), Math.round(y0 + (y1 - y0) * i / n), c);
+}
+const FIRE = [255, 128, 48];
+function drawLoco(x0, dy, glow) {
+  const th = cam / 4, cs = Math.cos(th), sn = Math.sin(th), wy = 137 + OFF;
+  for (const cx of DRIVERS) locoWheel(x0 + cx, wy, 4, th, true);
+  locoWheel(x0 + 6.5, 138.5 + OFF, 2.5, cam / 2.5, false);
+  locoWheel(x0 + 41.5, 138.5 + OFF, 2.5, cam / 2.5, false);
+  for (let y = 0; y < LOCO_H; y++) {
+    const by = y + LOCO_TOP, sy = by + OFF + (by < 134 ? dy : 0);
+    for (let x = 0; x < LOCO_W; x++) { const v = LOCO[y * LOCO_W + x]; if (v) px(x0 + x, sy, pal[v]); }
+  }
+  // running gear: coupling rod over the three drivers, main rod back from the crosshead
+  const cSt = pal[P.steel], cO = pal[P.locoO], py = wy - 0.5 + 2.2 * sn, pxo = x0 + 2.2 * cs + 0.5;
+  pxLine(pxo + DRIVERS[0] - 1, py, pxo + DRIVERS[2] - 1, py, cSt);
+  const hx = x0 + 35 + 2.2 * cs;
+  pxLine(pxo + DRIVERS[1] - 1, py, hx, 134 + OFF, cSt);
+  pxLine(hx, 135 + OFF, x0 + 38, 135 + OFF, cSt);
+  px(Math.round(hx), 134 + OFF, cO); px(Math.round(hx), 135 + OFF, cO);
+  for (const cx of DRIVERS) px(Math.round(pxo + cx - 1), Math.round(py), cO);
+  if (glow > 0) {
+    // lit cab window, and the firebox glowing on the ground under the cab
+    const a = glow * 0.3, f = 0.65 + 0.35 * Math.sin(clock * 21) * Math.sin(clock * 6.7);
+    for (let i = -1; i <= 7; i++) { addPx(x0 + 3 + i, 119 + OFF + dy, WARM, a); addPx(x0 + 3 + i, 126 + OFF + dy, WARM, a); }
+    for (let j = 0; j < 4; j++) { addPx(x0 + 2, 121 + j + OFF + dy, WARM, a); addPx(x0 + 10, 121 + j + OFF + dy, WARM, a); }
+    for (let i = 0; i < 12; i++) for (let j = 0; j < 6; j++) addPx(x0 + i, 135 + j + OFF, FIRE, glow * 0.45 * f * (1 - j / 6) * (1 - Math.abs(i - 6) / 7));
+  }
+}
+
+/* ---------- smoke, steam and sparks ----------
+   Puffs live in world space: they leave the chimney with some of the train's speed, lose it to the air and
+   rise, so the plume trails back over the carriages. One puff per exhaust beat (four per turn of the drivers),
+   bigger while the engine is working hard. Puffs born inside a tunnel stay under its roof. */
+const SMOKE = [], SM = { lastCam: null, beat: 0, acc: 0, idle: 0, steam: 0, depart: -99 };
+const SPARK = [255, 170, 70];
+function smokePuff(o) { if (SMOKE.length < 240) SMOKE.push(Object.assign({ age: 0, kind: 0, tun: inTunnel(o.x) }, o)); }
+function inTunnel(wx) { const n = Math.floor(wx / SEG); for (const m of [n - 1, n]) { const a = tunA(m); if (wx >= a && wx < a + tunLen()) return true; } return false; }
+function updSmoke(dt, e) {
+  const x0 = cam + trainX() + LOCO_X, moved = SM.lastCam === null ? 0 : Math.max(0, cam - SM.lastCam);
+  SM.lastCam = cam;
+  const work = clamp((SPEEDS[state.speedI] - vel) / 12, 0, 1), fast = Math.min(1, vel / 30);
+  const R = Math.random;
+  SM.acc += moved / (Math.PI * 2);
+  if (SM.acc > 4) SM.acc = 1;
+  while (SM.acc >= 1) {
+    SM.acc -= 1; SM.beat++;
+    const k = 0.45 + 0.4 * work + (SM.beat & 1 ? 0 : 0.15) - 0.15 * fast;
+    smokePuff({ x: x0 + 38.5 + (R() - 0.5), y: 112, vx: vel * 0.5, vy: -(9 + 12 * k) * (1 - 0.5 * fast), life: 2.4 + 1.6 * k + R() * 0.8, r0: 1.4 + k, g: 3 + 3.5 * k, dens: 0.75 + 0.3 * k });
+    if (e.night > 0.35 && R() < 0.25 + work * 0.4)
+      smokePuff({ kind: 2, x: x0 + 38.5, y: 112, vx: vel * 0.6 + (R() - 0.5) * 14, vy: -(22 + R() * 22), life: 0.4 + R() * 0.6 });
+  }
+  if (vel < 0.5 && (SM.idle -= dt) < 0) {
+    SM.idle = 0.5 + R() * 0.3;
+    smokePuff({ x: x0 + 38.5 + (R() - 0.5), y: 112, vx: 0, vy: -7, life: 2.8, r0: 1, g: 2.5, dens: 0.5 });
+  }
+  if ((SM.steam -= dt) < 0) {
+    SM.steam = 0.035;
+    // steam from the whistle while it sounds, and from the cylinder drain cocks as the train pulls away
+    if (whistling()) smokePuff({ kind: 1, x: x0 + 14.5, y: 117, vx: vel * 0.8 + (R() - 0.5) * 4, vy: -(26 + R() * 10), life: 0.7 + R() * 0.3, r0: 0.8, g: 2.6, dens: 0.85 });
+    if (clock - SM.depart < 3.5 && vel < 14) {
+      smokePuff({ kind: 1, x: x0 + 44, y: 136, vx: vel + 10 + R() * 12, vy: -(1 + R() * 4), life: 0.7 + R() * 0.4, r0: 1, g: 3.2, dens: 0.7 });
+      smokePuff({ kind: 1, x: x0 + 37, y: 137, vx: vel - 8 - R() * 8, vy: -(1 + R() * 3), life: 0.6 + R() * 0.3, r0: 1, g: 2.6, dens: 0.55 });
+    }
+  }
+  const wind = -1.5 - WTH.storm * 10, lift = -2.2 + e.wet * 1.4, kx = 1 - Math.exp(-dt / 0.5), ky = 1 - Math.exp(-dt / 0.9);
+  for (const p of SMOKE) {
+    p.age += dt;
+    if (p.kind === 2) { p.vy += 26 * dt; p.vx *= 1 - dt; }
+    else { p.vx += (wind - p.vx) * kx; p.vy += (lift - p.vy) * ky; }
+    p.x += p.vx * dt; p.y += p.vy * dt;
+    if (p.tun && p.y < 114) { p.y = 114; p.vy = 0; }
+  }
+  if (SMOKE.some(p => p.age >= p.life)) SMOKE.splice(0, SMOKE.length, ...SMOKE.filter(p => p.age < p.life));
+}
+const rgbOf = c => [c & 255, (c >>> 8) & 255, (c >>> 16) & 255];
+function drawSmoke() {
+  if (!SMOKE.length) return;
+  const cols = [P.smokeL, P.smokeM, P.smokeD].map(c => rgbOf(pal[c])), cS = rgbOf(pal[P.steam]), D = Math.floor(cam);
+  // screen columns inside a tunnel: puffs from outside never show there, puffs from inside only show there
+  const tun = new Uint8Array(W);
+  for (let sx = 0; sx < W; sx++) tun[sx] = inTunnel(D + sx) ? 1 : 0;
+  for (const p of SMOKE) {
+    const fade = Math.min(1, p.age / 0.1) * (1 - p.age / p.life) ** 1.3;
+    if (p.kind === 2) {
+      const sx = Math.round(p.x - cam);
+      if (sx >= 0 && sx < W && tun[sx] === +p.tun) addPx(sx, Math.round(p.y) + OFF, SPARK, 0.9 * fade);
+      continue;
+    }
+    const r = p.r0 + p.g * (1 - Math.exp(-p.age / 1.1)), cx = p.x - cam, cy = p.y + OFF;
+    for (let y = Math.floor(cy - r); y < Math.ceil(cy + r); y++) {
+      if (p.tun && y - OFF < 110) continue;
+      for (let x = Math.floor(cx - r); x < Math.ceil(cx + r); x++) {
+        if (x < 0 || x >= W || tun[x] !== +p.tun) continue;
+        const dx = x + 0.5 - cx, dy = y + 0.5 - cy, d2 = dx * dx + dy * dy;
+        if (d2 > r * r) continue;
+        const t = (dx + dy * 1.3) / r;
+        const a = Math.round(p.dens * fade * (d2 > r * r * 0.55 ? 0.55 : 1) * 5) / 5;
+        blendPx(x, y, p.kind ? cS : cols[t < -0.5 ? 0 : t > 0.4 ? 2 : 1], a);
+      }
+    }
+  }
+}
+
+/* ---------- the whistle ----------
+   Sounds on its own before tunnels, when leaving a station, when the express passes, and now and then out in
+   the country; D, the 鸣笛 button or a click on the engine sounds it too. */
+const WH = { t: -99, pat: [], len: 0, tun: null, next: 100 };
+const TOOTS = { long: [[0, 1.6]], depart: [[0, 0.4], [0.62, 1.2]], short: [[0, 0.3], [0.45, 0.32]], greet: [[0, 0.55]] };
+function toot(kind) {
+  if (clock - WH.t < WH.len + 0.4) return false;
+  const pat = TOOTS[kind];
+  WH.t = clock; WH.pat = pat; WH.len = pat[pat.length - 1][0] + pat[pat.length - 1][1];
+  sfx('whistle', pat);
+  return true;
+}
+function whistling() { const t = clock - WH.t; return WH.pat.some(([s, d]) => t >= s && t < s + d); }
+function updWhistle(dt, cover) {
+  const front = cam + trainX() + LOCO_X + LOCO_W, n = Math.floor(front / SEG);
+  for (const m of [n, n + 1]) { const d = tunA(m) - front; if (d > 30 && d < 160 && WH.tun !== m) { WH.tun = m; toot('long'); } }
+  if (STN.phase !== 'dwell' && cover === 0 && vel > 5 && (WH.next -= dt) < 0) { WH.next = 100 + Math.random() * 160; toot(Math.random() < 0.5 ? 'short' : 'greet'); }
+}
+
 /* ---------- stations: the train brakes, waits, doors open, people board ---------- */
+/* ---------- landmark stations ----------
+   In three of the landscapes the station comes with a landmark: Mt Fuji over the lake, the Statue of Liberty
+   out at sea, the Eiffel Tower behind the town. Each one is drawn live at its own parallax, placed so that it
+   stands just left of the station building while the train is stopped there. */
+const LANDMARKS = {
+  [LAKE]:    { key: 'fuji',    name: '富士山',   sign: 'FUJI',    par: 0.07, off: 98 },
+  [SEASIDE]: { key: 'liberty', name: '自由女神', sign: 'LIBERTY', par: 0.25, off: 50 },
+  [TOWN]:    { key: 'eiffel',  name: '巴黎',     sign: 'PARIS',   par: 0.38, off: 35 },
+};
+function landmarkOf(n) {
+  const S = stationOfSeg(n);
+  if (S === null) return null;
+  const bio = state.biome === 'auto' ? biomeOfSeg(n) : BIOME_KEYS.indexOf(state.biome);
+  return LANDMARKS[bio] || null;
+}
+// Each landmark has a fixed x in its own parallax layer (so the town can leave room around the tower);
+// with a 320-px-wide view it ends up about a third of the way across while the train is stopped.
+const landmarkLX = (L, S) => Math.round(S * L.par + L.off);
+function landmarkX(L, cam, S) { return landmarkLX(L, S) - Math.floor(cam * L.par); }
+// layer x of every Eiffel Tower whose base falls between a and b (in the tree layer's coordinates)
+function eiffelsIn(a, b) {
+  const L = LANDMARKS[TOWN], out = [];
+  for (let n = Math.floor((a - L.off) / L.par / SEG) - 1; n <= Math.floor((b - L.off) / L.par / SEG) + 1; n++) {
+    if (landmarkOf(n) !== L) continue;
+    const x = landmarkLX(L, stationOfSeg(n));
+    if (x >= a && x <= b) out.push(x);
+  }
+  return out;
+}
+function drawLandmark(which, cam, e) {
+  const n = segAt(cam), L = landmarkOf(n);
+  if (!L || L.key !== which) return;
+  const cx = landmarkX(L, cam, stationOfSeg(n));
+  if (which === 'fuji') drawFuji(cx);
+  else if (which === 'liberty') drawLiberty(cx, e);
+  else drawEiffel(cx, e);
+}
+// Mt Fuji after the reference pixel art: a flat-topped cone with wide skirts, a blue body lit from the left,
+// and a big snow cap, white on the lit side and blue-grey with lavender streaks on the shaded side.
+// Gullies and ridges fan out from the summit, so shading is bucketed by each pixel's angle from the top.
+function drawFuji(cx) {
+  const R = 136, peak = FUJI_PEAK, Hh = 74;
+  if (cx + R < 0 || cx - R > W) return;
+  const capH = Hh * (0.42 * seasonW[0] + 0.18 * seasonW[1] + 0.32 * seasonW[2] + 0.55 * seasonW[3]) + snowCover * 4;
+  const cL = pal[P.fujiL], cD = pal[P.fujiD], cE = pal[P.fujiE], cS = pal[P.fujiSnow], cSD = pal[P.fujiSnowD], cST = pal[P.fujiStreak];
+  for (let dx = -R; dx <= R; dx++) {
+    const sx = cx + dx;
+    if (sx < 0 || sx >= W) continue;
+    // a truncated cone: the slopes start right at the edge of a small summit plateau, so there's no step
+    const a = Math.abs(dx), u = Math.max(0, a - 6) / (R - 6);
+    const top = peak + Math.round(Hh * (1 - (1 - u) ** 1.8));
+    for (let by = top; by < 110; by++) {
+      const sy = by + OFF;
+      if (sy < 0 || sy >= H) continue;
+      const d = by - peak, ray = Math.floor(dx * 9 / (d + 8)), h1 = hash2(ray, 17), h2 = hash2(ray, 29);
+      const shaded = dx > 3 + (h2 < 0.3 ? -3 : 0);
+      const snow = d < capH * (0.7 + 0.5 * h1);                      // jagged snow line, longer down the gullies
+      let col;
+      if (snow) col = !shaded ? (h2 < 0.12 && d > 4 ? cST : cS) : h1 < 0.4 ? cST : cSD;
+      else col = !shaded ? (h1 < 0.18 ? cD : cL) : h1 > 0.85 ? cL : cD;
+      if (by === top && a > 6) col = dx < 0 ? cD : cE;               // outline along the slopes
+      buf[sy * W + sx] = col;
+    }
+  }
+}
+// hand-placed sprites drawn after the reference pixel art; each letter names a palette colour, '.' is transparent
+const LIB_PAL = { o: 'libOutline', k: 'libDark', g: 'libMid', j: 'libLight', y: 'libFlame', f: 'libFlameO', r: 'libFlameD', u: 'libStoneD', t: 'libStone', v: 'libStoneL', s: 'libStoneHi', e: 'libTree', q: 'libTreeD' };
+const LIB_SPRITE = [
+  '...................oyo..............................',
+  '..................oyfyo.............................',
+  '..................orfro.............................',
+  '..................okgko.............................',
+  '...................ojo..............................',
+  '...................ojo..............................',
+  '...................ojko.o.o.o.......................',
+  '...................ojkoogogogoo.....................',
+  '...................ojkogjggggkgo....................',
+  '....................ojkoojjgkoo.....................',
+  '....................ojkoojjgko......................',
+  '....................ojjkoogkoo......................',
+  '.....................ojjjjggkkooo...................',
+  '.....................ojjjjgggkkjko..................',
+  '.....................ojjjjkggkkgko..................',
+  '.....................ojjjjkggkkgko..................',
+  '.....................ojjjjkggkkgko..................',
+  '.....................ojjjjkggkkgko..................',
+  '.....................ojjjjkggkkgko..................',
+  '.....................ojjjjkggkkgko..................',
+  '....................ojjgjjkggkkgko..................',
+  '....................ojjgjjkggkkko...................',
+  '....................ojjgjjkggkkko...................',
+  '....................ojjgjjkggkkko...................',
+  '....................ojjgjjkggkkko...................',
+  '....................ojjgjjkggkkko...................',
+  '...................ojjjgjjkggkkko...................',
+  '...................ojjjgjjkggkkko...................',
+  '...................ojjjgjjkggkgkko..................',
+  '...................ojjjgjjkggkgkko..................',
+  '...................ojjjgjjkggkgkko..................',
+  '...................usssssssssssu....................',
+  '..................uuuuuuuuuuuuuuu...................',
+  '...................usssvvvvttttu....................',
+  '...................usssvvvvttttu....................',
+  '...................ussuvvuvtuttu....................',
+  '...................ussuvvuvtuttu....................',
+  '...................ussuvvuvtuttu....................',
+  '...................usssvvvvttttu....................',
+  '...................utttttttttttu....................',
+  '...................usssvvvvttttu....................',
+  '...................usssvvvvttttu....................',
+  '.................usssssssssssssssu..................',
+  '..........q......usssssvvvvvtttttu.......q..........',
+  '......q..eqq.uqvvvvvvvvvvvvvvvvvvvvvuq..eqq..q......',
+  '.....eqqeeqqqeqqsssssvvvvvvvvvtttttteqqeeqqqeqq.q...',
+  '....eeqeeeqqeeqqquuuuuuuuuuuuuuuuuueeqeeeqqeeqqeqq..',
+  '...uuueeeeqeeeeqeeeeqeeeeqeeeeqeeeeqeeeeqeeeeuuu....',
+  '.uuttttttttttttttttttttttuuuuuuuuuuuuuuuuuuuuuuuuu..',
+  'uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu.',
+];
+const EIF_PAL = { o: 'eifOutline', d: 'eifDark', m: 'eifMid', l: 'eifLight', h: 'eifHi' };
+const EIF_SPRITE = [
+  '.................d.................',
+  '.................m.................',
+  '.................m.................',
+  '.................m.................',
+  '................lmd................',
+  '...............ohmdo...............',
+  '...............olmmo...............',
+  '...............ooooo...............',
+  '................lmd................',
+  '...............ohmmo...............',
+  '...............ohmmo...............',
+  '...............ohmmo...............',
+  '...............ohmmo...............',
+  '...............ohmmo...............',
+  '...............ohmmo...............',
+  '...............odddo...............',
+  '...............ohmmo...............',
+  '..............ohlmmmo..............',
+  '..............odlmmdo..............',
+  '..............ohdmdmo..............',
+  '..............ohldmmo..............',
+  '..............ohlmmmo..............',
+  '..............odddddo..............',
+  '..............ohdmdmo..............',
+  '..............ohldmmo..............',
+  '.............odllmmmdo.............',
+  '.............ohdlmmdmo.............',
+  '.............ohldmdmmo.............',
+  '.............ohlldmmmo.............',
+  '.............odddddddo.............',
+  '.............ohdlmmdmo.............',
+  '.............ohldmdmmo.............',
+  '.............ohlldmmmo.............',
+  '............ohdllmmmdmo............',
+  '............ohldlmmdmmo............',
+  '............ohlldmdmmmo............',
+  '............odddddddddo............',
+  '............ohdllmmmdmo............',
+  '..........ooooooooooooooo..........',
+  '..........odhdhdhdldldldo..........',
+  '..........ooooooooooooooo..........',
+  '...........ohdlddmddmdmo...........',
+  '...........ohldlldmmdmmo...........',
+  '...........ohdlddmddmdmo...........',
+  '..........ohddlddmddmddmo..........',
+  '..........ohlld..d..dmmmo..........',
+  '..........ohdd.dd.dd.ddmo..........',
+  '.........ohldd.dd.dd.ddmmo.........',
+  '.........ohdl.d..d..d.mdmo.........',
+  '........ohdldd.dd.dd.ddmdmo........',
+  '........ohdldd.dd.dd.ddmdmo........',
+  '.....ooooooooooooooooooooooooo.....',
+  '.....ohhhhhhhhhhhmlllllllllllo.....',
+  '.....olldlldlldlldmmdmmdmmdmmo.....',
+  '.....olldlldlldlldmmdmmdmmdmmo.....',
+  '.....ooooooooooooooooooooooooo.....',
+  '......odlhomdmdmdmddddddommdo......',
+  '......oldhodmdmoooooddddomdmo......',
+  '.....odlhodmdoo.....oodddommdo.....',
+  '.....oldhomdo.........oddomdmo.....',
+  '....odlhomo.............odommdo....',
+  '....oldlhoo.............oommdmo....',
+  '....olldho...............omdmmo....',
+  '...oldlho.................ommdmo...',
+  '...olldho.................omdmmo...',
+  '..oldlho...................ommdmo..',
+  '..olldho...................omdmmo..',
+  '..odlldo...................odmmdo..',
+  '.olldho.....................omdmmo.',
+  '.odlldo.....................odmmdo.',
+  'olldho.......................omdmmo',
+  'odlldho.....................omdmmdo',
+];
+// draws a sprite with its bottom-centre at (cx, bottom); returns the screen positions it covered
+function drawSprite(rows, names, cx, bottom) {
+  const w = rows[0].length, x0 = cx - (w >> 1), y0 = bottom - rows.length + OFF, out = [], cols = [];
+  for (const k in names) cols[k.charCodeAt(0)] = pal[P[names[k]]];
+  rows.forEach((row, j) => {
+    const sy = y0 + j;
+    if (sy < 0 || sy >= H) return;
+    for (let i = 0; i < w; i++) {
+      const ch = row.charCodeAt(i), sx = x0 + i;
+      if (ch === 46 || sx < 0 || sx >= W) continue;
+      buf[sy * W + sx] = cols[ch];
+      out.push(sx, sy);
+    }
+  });
+  return out;
+}
+// Statue of Liberty on her island, standing on the sea horizon (so the water reflects her); floodlit at night
+function drawLiberty(cx, e) {
+  const w = LIB_SPRITE[0].length;
+  if (cx + w < 0 || cx - w > W) return;
+  const lit = drawSprite(LIB_SPRITE, LIB_PAL, cx, 95), nt = e.night;
+  if (nt > 0.25) {
+    const g = (nt - 0.25) * 0.5;
+    for (let i = 0; i < lit.length; i += 2) addPx(lit[i], lit[i + 1], [200, 236, 214], g * 0.4);
+    const fx = cx - (w >> 1) + 20, fy = 95 - LIB_SPRITE.length + 1 + OFF;
+    for (let dy = -6; dy <= 6; dy++) for (let dx = -6; dx <= 6; dx++) {
+      const r = Math.hypot(dx, dy);
+      if (r < 6) addPx(fx + dx, fy + dy, [255, 200, 90], g * 1.2 * (1 - r / 6));
+    }
+  }
+}
+// Eiffel Tower: golden lights at night, a sparkle now and then, and the rotating beacon on top
+function drawEiffel(cx, e) {
+  const w = EIF_SPRITE[0].length;
+  if (cx + w < 0 || cx - w > W) return;
+  const base = 101, lit = drawSprite(EIF_SPRITE, EIF_PAL, cx, base), nt = e.night;
+  const glow = Math.max(0, nt - 0.3) * 0.9, st = Math.floor(clock * 5);
+  if (glow > 0) for (let i = 0; i < lit.length; i += 2) addPx(lit[i], lit[i + 1], [255, 186, 86], glow * 0.38);
+  // a faint twinkle for a few seconds each minute, a handful of lights at a time
+  if (nt > 0.55 && clock % 60 < 6) for (let i = 0; i < lit.length; i += 2) if (hash2(lit[i] * 7 + st, lit[i + 1]) < 0.02) addPx(lit[i], lit[i + 1], [255, 244, 210], 0.45);
+  if (nt > 0.45) {
+    // the beacon's beam sweeps round; seen side on, it swings left and right
+    const ang = clock * 1.1, len = Math.abs(Math.cos(ang)) * 70, dir = Math.cos(ang) > 0 ? 1 : -1, by = base - EIF_SPRITE.length + 3 + OFF, k = (nt - 0.45) * 1.2;
+    for (let i = 1; i < len; i++) addPx(cx + dir * i, by, [255, 236, 180], k * 0.45 * (1 - i / 70));
+    addPx(cx, by, [255, 244, 200], k);
+  }
+}
+
 const STN_HALF = 150, DWELL = 14, BRAKE = 2.6;
-const DOOR_OFF = [-66, -7, 6, 65]; // door centres relative to the train's centre
+const DOOR_OFF = [-91, -32, -19, 40]; // door centres relative to the train's centre
 const COATS = ['coat1', 'coat2', 'coat3', 'coat4', 'coat5', 'coat6'];
 const SKINS = ['skin1', 'skin1', 'skin2', 'skin3'], HAIRS = ['hair1', 'hair1', 'hair2', 'hair3'];
 const STN = { n: null, S: 0, people: [], phase: 'none', t: 0, done: null, squeal: false };
@@ -1454,7 +1991,7 @@ function stationOfSeg(n) {
   const bio = state.biome === 'auto' ? biomeOfSeg(n) : BIOME_KEYS.indexOf(state.biome);
   return bio === RIVER ? null : S;
 }
-const stopCamOf = S => S - trainX() - 71;
+const stopCamOf = S => S - trainX() - TRAIN_MID;
 function mkPerson(x, r, board) {
   return {
     x, board, sit: false, st: 'wait', coat: P[COATS[r() * COATS.length | 0]], skin: P[SKINS[r() * SKINS.length | 0]], hair: P[HAIRS[r() * HAIRS.length | 0]],
@@ -1471,6 +2008,8 @@ function ensureStation(n, S) {
     STN.people.push(mkPerson(x, r, board));
   }
   if (r() < 0.6) { const p = mkPerson(S - 101 + (r() * 5 | 0), r, false); p.sit = true; STN.people.push(p); }
+  const L = landmarkOf(n);
+  if (L && !state.wall && stopCamOf(S) > cam) toast((state.stops ? '前方到站：' : '即将经过：') + L.name);
 }
 function nextStop() {
   if (!state.stops) return null;
@@ -1509,7 +2048,8 @@ function updStation(dt) {
     }
   }
   if (cross(DWELL - 2.4)) sfx('chime', 0);
-  if (s.t >= DWELL) { s.phase = 'none'; s.done = s.n; }
+  if (cross(DWELL - 1.1)) toot('depart');
+  if (s.t >= DWELL) { s.phase = 'none'; s.done = s.n; SM.depart = clock; }
 }
 // people: 5x12 sprites built cell by cell, then wrapped in a dark outline so
 // they read clearly against the cream-and-red carriages
@@ -1568,6 +2108,17 @@ function drawStationBack(cam, e) {
   rect(bx + 36, 101, 5, 5, P.clockF); put(bx + 38, 102, P.signText); put(bx + 38, 103, P.signText); put(bx + 39, 103, P.signText);
   if (e.night > 0.3) for (const ox of [9, 27, 45]) for (let i = -2; i < 11; i++) addPx(bx + ox + i - D, 136 + OFF, WARM, 0.12 * e.night);
 }
+// a 3x5 pixel font, only the letters the station boards need
+const FONT = {
+  A: '.#.#.#####.##.#', B: '##.#.###.#.###.', E: '####..##.#..###', F: '####..##.#..#..', I: '###.#..#..#.###', J: '..#..#..##.####',
+  L: '#..#..#..#..###', P: '##.#.###.#..#..', R: '##.#.###.#.##.#', S: '####..###..####', T: '###.#..#..#..#.', U: '#.##.##.##.####', Y: '#.##.#.#..#..#.',
+};
+function pixelText(str, x, y, dot) {
+  [...str].forEach((ch, k) => {
+    const g = FONT[ch];
+    if (g) for (let i = 0; i < 15; i++) if (g[i] === '#') dot(x + k * 4 + i % 3, y + Math.floor(i / 3));
+  });
+}
 function drawStationFront(cam, e) {
   if (STN.n === null) return;
   const D = Math.floor(cam), S = STN.S, x0 = S - STN_HALF - D, x1 = S + STN_HALF - D;
@@ -1585,11 +2136,21 @@ function drawStationFront(cam, e) {
   // vending machine, bench, name board
   rect(S - 131, 124, 7, 15, P.vend1); rect(S - 130, 126, 5, 5, P.vendLit); rect(S - 130, 133, 5, 1, P.under); rect(S - 129, 136, 3, 1, P.under);
   rect(S - 104, 133, 11, 2, P.bench); rect(S - 104, 136, 11, 1, P.bench); put(S - 103, 137, P.pole); put(S - 95, 137, P.pole); put(S - 103, 138, P.pole); put(S - 95, 138, P.pole);
-  const sg = S + 96;
-  rect(sg, 127, 1, 12, P.pole); rect(sg + 19, 127, 1, 12, P.pole);
-  rect(sg - 1, 119, 22, 8, P.signBoard); rect(sg - 1, 125, 22, 1, P.coat1);
-  rect(sg + 5, 121, 3, 2, P.signText); rect(sg + 9, 121, 3, 2, P.signText); rect(sg + 13, 121, 3, 2, P.signText);
-  rect(sg + 1, 124, 4, 1, P.signText); rect(sg + 15, 124, 4, 1, P.signText);
+  const sg = S + 104, L = landmarkOf(STN.n);
+  if (L) {
+    // landmark stations spell their name out on the board
+    const bw = Math.max(22, L.sign.length * 4 + 3);
+    rect(sg, 127, 1, 12, P.pole); rect(sg + bw - 3, 127, 1, 12, P.pole);
+    rect(sg - 1, 118, bw, 9, P.signBoard);
+    const stripe = L.key === 'eiffel' ? [P.flagB, P.flagW, P.flagR] : L.key === 'fuji' ? [P.coat2] : [P.coat1];
+    for (let i = 0; i < bw; i++) put(sg - 1 + i, 125, stripe[Math.floor(i / bw * stripe.length)]);
+    pixelText(L.sign, sg + 1, 119, (x, y) => put(x, y, P.signText));
+  } else {
+    rect(sg, 127, 1, 12, P.pole); rect(sg + 19, 127, 1, 12, P.pole);
+    rect(sg - 1, 119, 22, 8, P.signBoard); rect(sg - 1, 125, 22, 1, P.coat1);
+    rect(sg + 5, 121, 3, 2, P.signText); rect(sg + 9, 121, 3, 2, P.signText); rect(sg + 13, 121, 3, 2, P.signText);
+    rect(sg + 1, 124, 4, 1, P.signText); rect(sg + 15, 124, 4, 1, P.signText);
+  }
   for (const lx of [-138, -46, 46, 138]) {
     const x = S + lx;
     rect(x, 119, 1, 20, P.pole); rect(x - 2, 116, 5, 1, P.pole); rect(x - 1, 117, 3, 1, P.lamp);
@@ -1613,6 +2174,7 @@ function updPasser(dt, bio, cover) {
   if (bio === RIVER || cover > 0 || tunnelCover(cam + 600) > 0 || fade) { nextPass = 25; return; }
   passer = { x: W + 40, v: 280 + Math.random() * 80, cars: 4 + (Math.random() * 3 | 0) };
   sfx('pass');
+  setTimeout(() => toot('greet'), 400);
 }
 function drawPasser(e) {
   if (!passer) return;
@@ -1944,26 +2506,51 @@ function drawInterior(e, cover, cam) {
 const STEAM = [248, 246, 240];
 
 /* ---------- sky, sun, moon, stars, lightning ---------- */
-let STARS = [];
+let STARS = [], MILKY = [];
 function makeStars() {
-  STARS = [];
+  STARS = []; MILKY = [];
   const rows = Math.min(H, 92 + OFF);
   for (let y = 0; y < rows; y++) for (let x = 0; x < W; x++) {
     const h = hash2(x * 7 + 13, y * 11 + 3);
     if (h < 0.004) STARS.push([x, y, h * 250]);
+    // the Milky Way: a faint, clumpy band slanting across the sky, thick with tiny stars
+    const d = Math.abs((y - OFF) - (x / W * 70 - 8)) / 16, band = Math.max(0, 1 - d * d);
+    if (band > 0) {
+      const v = band * (0.35 + 0.9 * fbm(x / 11 + y * 0.07, 61, 3) * fbm(y / 7 - x * 0.03, 67, 2) * 2);
+      if (v > 0.25) MILKY.push([x, y, Math.min(1, v), hash2(x * 3 + 7, y * 5 + 1) < 0.025 * v]);
+    }
   }
 }
-const STAR_RGB = [236, 238, 255], MOON_RGB = [244, 240, 216];
+const STAR_RGB = [236, 238, 255], MOON_RGB = [244, 240, 216], MILKY_RGB = [196, 204, 238];
+// Sky: the four key colours are split into 13 steps and dithered between neighbours (a smooth but still
+// pixel-art gradient), plus a warm glow around the sun that is strongest when the sun is low.
+const SKY_LV = 4, skyTab = new Uint32Array(13 * 4);
 function drawSky(e, t) {
-  const st = e.sky, rows = Math.min(H, 112 + OFF);
+  const st = e.sky, rows = Math.min(H, 112 + OFF), [sx0, sy0] = sunScreen(e);
+  const low = clamp((e.sunY - 40) / 70, 0, 1), gk = e.sunA * (1 - e.night) * (0.2 + 0.35 * low);
+  for (let i = 0; i <= 3 * SKY_LV; i++) {
+    const a = Math.min(2, Math.floor(i / SKY_LV)), c = mixRGB(st[a], st[a + 1], i / SKY_LV - a);
+    for (let g = 0; g < 4; g++) skyTab[i * 4 + g] = pack(...mixRGB(c, e.sun, g * 0.22));
+  }
+  const top = 3 * SKY_LV;
   for (let sy = 0; sy < rows; sy++) {
-    const by = sy - OFF, p = clamp(by / 100, 0, 1) * 3, i = Math.min(2, Math.floor(p)), f = p - i;
-    const ff = clamp((f - 0.3) / 0.4, 0, 1);
-    const cA = pack(...st[i]), cB = pack(...st[i + 1]), o = sy * W, bo = (sy & 3) << 2;
-    for (let sx = 0; sx < W; sx++) buf[o + sx] = ff > BAYER[bo | (sx & 3)] ? cB : cA;
+    const by = sy - OFF, p = clamp(by / 100, 0, 1) * top, o = sy * W, bo = (sy & 3) << 2, dy = (sy - sy0) * 1.7;
+    for (let sx = 0; sx < W; sx++) {
+      const bay = BAYER[bo | (sx & 3)];
+      let g = 0;
+      if (gk > 0.01) {
+        const dx = sx - sx0, q = 1 - Math.sqrt(dx * dx + dy * dy) / 150;
+        if (q > 0) g = Math.min(3, Math.floor(gk * q * q * 7 + BAYER[15 - (bo | (sx & 3))]));
+      }
+      buf[o + sx] = skyTab[Math.min(top, Math.floor(p + bay)) * 4 + g];
+    }
   }
   const sa = e.night * e.starA;
   if (sa > 0.05) {
+    for (const [x, y, v, star] of MILKY) {
+      if (v * 0.75 > BAYER[((y & 3) << 2) | (x & 3)]) blendPx(x, y, MILKY_RGB, sa * 0.055);
+      if (star) blendPx(x, y, STAR_RGB, sa * 0.3);
+    }
     for (const [x, y, h] of STARS) {
       const tw = 0.55 + 0.45 * Math.sin(t * (1.2 + h * 0.8) + h * 37);
       blendPx(x, y, STAR_RGB, sa * tw * (h < 0.25 ? 1 : 0.65));
@@ -1985,7 +2572,20 @@ function halo(cx, cy, R, rgb, a) {
     blendPx(cx + dx, cy + dy, rgb, d <= 3.5 ? a : a * 0.45);
   }
 }
-function sunScreen(e) { return [Math.round(e.sunX * W), Math.round(e.sunY) + OFF]; }
+// Over the lake with Mt Fuji in view, the sun sits right behind the summit (the classic "diamond Fuji"):
+// resting on the peak by day, sinking behind the snow at sunset and rising from behind it at dawn.
+const FUJI_PEAK = 30;
+function fujiSunX() {
+  const n = segAt(cam), L = landmarkOf(n);
+  if (!L || L.key !== 'fuji') return null;
+  const x = landmarkX(L, cam, stationOfSeg(n));
+  return x > -30 && x < W + 30 ? x : null;
+}
+function sunScreen(e) {
+  const fx = fujiSunX();
+  if (fx === null) return [Math.round(e.sunX * W), Math.round(e.sunY) + OFF];
+  return [fx, FUJI_PEAK - 3 + Math.round(Math.max(0, e.sunY - 66) * 0.9) + OFF];
+}
 function moonScreen() { return [Math.round(W * 0.18), 28 + OFF]; }
 function moonVis(e) { return smooth(clamp((e.night - 0.55) / 0.35, 0, 1)) * e.starA; }
 let MOON_P = 0.3, dayCount = 0;
@@ -2002,7 +2602,10 @@ function drawMoonDisc(cx, cy, R, p, a) {
 }
 function drawSunMoon(e) {
   const [sx, sy] = sunScreen(e);
-  if (sy - 16 < 112 + OFF && e.sunA > 0.02) { halo(sx, sy, 15, e.sun, 0.2 * e.sunA); disc(sx, sy, 15, e.sun, e.sunA); }
+  // behind Fuji the sun is a big red disc, reddest when it is lowest
+  const fuji = fujiSunX() !== null, R = fuji ? 17 : 15;
+  const col = fuji ? mixRGB(e.sun, [236, 62, 42], 0.64 + 0.3 * smooth(clamp((e.sunY - 44) / 30, 0, 1))) : e.sun;
+  if (sy - R - 1 < 112 + OFF && e.sunA > 0.02) { halo(sx, sy, R, col, 0.2 * e.sunA); disc(sx, sy, R, col, e.sunA); }
   const mv = moonVis(e);
   if (mv > 0) { const [mx, my] = moonScreen(); halo(mx, my, 7, MOON_RGB, 0.08 * mv * (0.2 + moonIllum())); drawMoonDisc(mx, my, 7, MOON_P, mv); }
 }
@@ -2366,6 +2969,11 @@ function startAudio() {
       AU.roll = gainN(0); chain(loopSrc(AU.white), filt('bandpass', 620, 0.9), AU.roll, AU.rail);
       AU.bedLP = filt('lowpass', 700); AU.bedG = gainN(0); chain(AU.bedG, AU.bedLP, AU.railLP);
       loadSamples();
+      // whistle: its own bus, panned towards the engine, with a slap-back echo off hills (longer in tunnels)
+      AU.whistle = gainN(1); AU.whPan = ac.createStereoPanner ? ac.createStereoPanner() : gainN(1);
+      chain(AU.whistle, AU.whPan, AU.out);
+      AU.whDelay = ac.createDelay(1); AU.whDelay.delayTime.value = 0.38; AU.whFb = gainN(0.3); AU.whWet = gainN(0.28);
+      chain(AU.whPan, AU.whDelay, filt('lowpass', 1600), AU.whFb, AU.whDelay); AU.whFb.connect(AU.whWet); AU.whWet.connect(AU.out);
       AU.rain = gainN(0); chain(loopSrc(AU.white), filt('highpass', 1100), filt('lowpass', 7000), AU.rain, AU.out);
       AU.wind = gainN(0); chain(loopSrc(AU.brown), filt('bandpass', 480, 0.6), AU.wind, AU.out);
       AU.waves = gainN(0); chain(loopSrc(AU.brown), filt('lowpass', 900), AU.waves, AU.out);
@@ -2408,6 +3016,31 @@ function tone(freq, peak, attack, decay, type = 'sine', when = 0, dest = AU.out)
   o.start(t0); o.stop(t0 + attack + decay + 0.05);
   return { o, t0 };
 }
+// a three-chime steam whistle: each pipe a soft tone plus its own breathy band of noise; the valve opens flat
+// and sharpens, and the pitch sags as it closes
+const CHIME = [311, 370, 466];
+function whistleNote(when, d) {
+  const ac = AU.ctx, t = ac.currentTime + when, end = t + d, stop = end + 0.7, env = gainN(0), det = 0.985 + Math.random() * 0.03;
+  env.connect(AU.whistle);
+  env.gain.setValueAtTime(0, t); env.gain.linearRampToValueAtTime(1, t + 0.09);
+  env.gain.setValueAtTime(1, end); env.gain.setTargetAtTime(0, end, 0.1);
+  const vib = ac.createOscillator(); vib.frequency.value = 4.5 + Math.random() * 1.5; vib.start(t); vib.stop(stop);
+  CHIME.forEach((f0, i) => {
+    const f = f0 * det, o = ac.createOscillator(), fr = o.frequency, g = gainN([0.05, 0.042, 0.034][i]);
+    o.type = 'triangle';
+    fr.setValueAtTime(f * 0.9, t); fr.exponentialRampToValueAtTime(f, t + 0.16);
+    fr.setValueAtTime(f, end); fr.exponentialRampToValueAtTime(f * 0.95, end + 0.35);
+    const vd = gainN(f * 0.004); vib.connect(vd); vd.connect(fr);
+    chain(o, g, env); o.start(t); o.stop(stop);
+    const n = ac.createBufferSource(), bp = filt('bandpass', f, 22), ng = gainN(0.7);
+    n.buffer = AU.white; n.loop = true;
+    bp.frequency.setValueAtTime(f * 0.9, t); bp.frequency.exponentialRampToValueAtTime(f, t + 0.16);
+    chain(n, bp, ng, env); n.start(t, Math.random() * 2); n.stop(stop);
+  });
+  const h = ac.createBufferSource(), hg = gainN(0.012);
+  h.buffer = AU.white; h.loop = true;
+  chain(h, filt('highpass', 2800), hg, env); h.start(t, Math.random() * 2); h.stop(stop);
+}
 function sfx(kind, arg = 1, when = 0) {
   if (!AU.on || !AU.ctx || AU.ctx.state !== 'running') return;
   try {
@@ -2429,6 +3062,8 @@ function sfx(kind, arg = 1, when = 0) {
       const w = burst(AU.white, 'bandpass', 300, 0.8, 0.45, 0.45, 1.6, 0.3);
       w.fl.frequency.setValueAtTime(260, w.t0); w.fl.frequency.linearRampToValueAtTime(1500, w.t0 + 0.5); w.fl.frequency.exponentialRampToValueAtTime(320, w.t0 + 1.9);
       burst(AU.brown, 'lowpass', 300, 0.5, 0.5, 0.4, 1.6, 0.3, AU.master);
+    } else if (kind === 'whistle') {
+      for (const [st, d] of arg) whistleNote(when + st, d);
     } else if (kind === 'squeal') {
       const h = tone(2900, 0.018, 0.4, 1.6, 'sine');
       h.o.frequency.linearRampToValueAtTime(2700, h.t0 + 2);
@@ -2620,6 +3255,10 @@ function updAudio(e, bio, cover) {
   set(AU.cicada.gain, seasonW[1] * (1 - e.night) * (1 - e.wet) * open * (bio === TOWN ? 0.02 : 0.05), 1);
   set(AU.cricket.gain, (seasonW[2] + seasonW[1] * 0.5) * smooth(clamp((e.night - 0.4) / 0.4, 0, 1)) * (1 - e.wet) * open * 0.012, 1);
   set(AU.outLP.frequency, state.view === 'in' ? 2200 : 16000, 0.2);
+  if (AU.whPan.pan) set(AU.whPan.pan, state.view === 'in' ? 0.55 : clamp((trainX() + LOCO_X + 14 - W / 2) / (W / 2), -1, 1) * 0.8, 0.2);
+  set(AU.whDelay.delayTime, 0.38 - cover * 0.25, 0.3);
+  set(AU.whFb.gain, 0.3 + cover * 0.25, 0.3);
+  set(AU.whWet.gain, 0.28 + cover * 0.3, 0.3);
 }
 document.addEventListener('visibilitychange', () => {
   if (!AU.ctx) return;
@@ -2712,12 +3351,14 @@ function resize() {
   cvs.style.height = H * SCALE + 'px';
   img = ctx.createImageData(W, H);
   buf = new Uint32Array(img.data.buffer);
-  CARS = [buildCar(false, 0.31), buildCar(true, 0.77)];
+  CARS = [buildCar(true, 0.31), buildCar(false, 0.77)];
+  LOCO = buildLoco();
   makeStars();
   initLeaves();
   initDrops();
   initFlies();
   buildInterior();
+  trees.cache.clear();   // which stations exist depends a little on the width (tunnel length)
 }
 
 /* ---------- motion: cruising, tunnels, braking into stations ---------- */
@@ -2761,10 +3402,11 @@ function frame(dt) {
     updLightning(dt);
     updStation(dt);
     updPasser(dt, bio, cover);
+    updWhistle(dt, cover);
   }
   if (fade) {
     fade.t += dt * 3;
-    if (fade.t >= 1 && !fade.done) { state.biome = fade.to; fade.done = true; save(); syncUI(); }
+    if (fade.t >= 1 && !fade.done) { state.biome = fade.to; fade.done = true; trees.cache.clear(); save(); syncUI(); }
     if (fade.t >= 2) fade = null;
   }
   const near = (() => { const n = segAt(cam), S = stationOfSeg(n); return S !== null && S - STN_HALF - 20 < cam + W + 200 ? { n, S } : null; })();
@@ -2777,6 +3419,7 @@ function frame(dt) {
   buildPal(e);
   const snowing = seasonW[3] > 0.5, inside = state.view === 'in';
   if (!state.paused) {
+    updSmoke(dt, e);
     updLeaves(dt, vel); updBirds(dt, e, bio); updFlies(dt, vel); updDrops(dt, vel, snowing); updMeteors(dt, e);
     if (inside) updBeads(dt);
   }
@@ -2790,8 +3433,11 @@ function frame(dt) {
   drawBolt();
   drawBirds();
   farMtn.draw(cam, clock, bio);
+  drawLandmark('fuji', cam, e);
   nearMtn.draw(cam, clock, bio);
+  drawLandmark('liberty', cam, e);
   trees.draw(cam, clock, bio);
+  drawLandmark('eiffel', cam, e);
   meadow.draw(cam, clock, bio);
   drawWater(cam, clock, e, bio);
   drawSkaters(cam, e, bio);
@@ -2807,7 +3453,7 @@ function frame(dt) {
   if (bio === LAKE || bio === FIELDS) drawPampas(cam, clock);
   if (!inside) { drawLeaves(); drawFlies(e, bio); drawDrops(snowing); }
   drawTunnels(cam);
-  if (!inside) drawTrain(cam, e, cover);
+  if (!inside) { drawTrain(cam, e, cover); drawSmoke(); }
   drawStationFront(cam, e);
   drawTunnelLights(cam);
   if (inside) {
@@ -2932,6 +3578,20 @@ function setOpt(k, v) {
   save(); syncUI();
 }
 playBtn.addEventListener('click', togglePause);
+let tootHinted = false;
+function userToot() {
+  if (state.paused) return;
+  toot(Math.random() < 0.7 ? 'long' : 'short');
+  if (!state.sound && !tootHinted) { tootHinted = true; toast('鸣笛：打开声音（M）才听得到'); }
+}
+document.getElementById('toot').addEventListener('click', userToot);
+// a click on the engine sounds the whistle too
+cvs.addEventListener('pointerdown', ev => {
+  if (state.view === 'in') return;
+  const r = cvs.getBoundingClientRect(), sx = (ev.clientX - r.left) / r.width * W, sy = (ev.clientY - r.top) / r.height * H - OFF;
+  const x0 = trainX() + LOCO_X;
+  if (sx >= x0 && sx < x0 + LOCO_W && sy >= LOCO_TOP && sy < 141) userToot();
+});
 document.getElementById('fs').addEventListener('click', toggleFullscreen);
 document.querySelectorAll('[data-speed]').forEach(b => b.addEventListener('click', () => setSpeed(+b.dataset.speed)));
 document.querySelectorAll('[data-time]').forEach(b => b.addEventListener('click', () => setMode(b.dataset.time)));
@@ -2963,6 +3623,7 @@ addEventListener('keydown', ev => {
   else if (k === 'v') setOpt('view', state.view !== 'in');
   else if (k === 'm') setOpt('sound', !state.sound);
   else if (k === 'r') setRail(cycleOf(RAIL_KEYS, state.rail));
+  else if (k === 'd') userToot();
   else if (k === 't') setOpt('stops', !state.stops);
   else if (k === 'e') setOpt('eco', !state.eco);
   else if (k === 'h' || (k === 'escape' && state.wall)) { setOpt('wall', !state.wall); return; }
