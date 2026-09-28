@@ -2,6 +2,8 @@
 
 一张会动的像素画：一列红白两节的小火车，沿着湖畔、花田、海边、小镇和河谷一直开下去，穿过隧道换景，经过车站停靠，四季、昼夜和天气都在变化。
 
+**在线演示：<https://qaqwowqaq.github.io/pixel-train-wallpaper/>**
+
 **整个项目只有一个 `index.html`**。不依赖任何库，没有构建步骤，也没有图片素材。画面里的每一个像素都是代码实时算出来的，声音也是用 Web Audio 现场合成的。
 
 ![湖畔 · 秋日黄昏](screenshots/lake-autumn.png)
